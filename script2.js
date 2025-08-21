@@ -25,10 +25,10 @@ if (volumeSlider) {
 
 
 const sons = {
-  default:   '/assets/sons/default.mp3',
-  verao: '/assets/sons/Brazilian-Sunset.mp3',
-  inverno:   '/assets/sons/Copacabana-Beach-Dreams.mp3',
-  primavera: '/assets/sons/Samba-Atomica.mp3'
+  default:   'assets/sons/default.mp3',
+  verao: 'assets/sons/Brazilian-Sunset.mp3',
+  inverno:   'assets/sons/Copacabana-Beach-Dreams.mp3',
+  primavera: 'assets/sons/Samba-Atomica.mp3'
 }
 
 function getContexto() {
