@@ -26,9 +26,9 @@ if (volumeSlider) {
 
 const sons = {
   default:   '/assets/sons/default.mp3',
-  verao: '/assets/sons/SpotiDownloader.com - Brazilian Sunset Vibes - Brazil Beats.mp3',
-  inverno:   '/assets/sons/SpotiDownloader.com - Copacabana Beach Dreams - Brazil Beats.mp3',
-  primavera: '/assets/sons/SpotiDownloader.com - Samba Atômica - Brazil Beats.mp3'
+  verao: '/assets/sons/Brazilian-Sunset.mp3',
+  inverno:   '/assets/sons/Copacabana-Beach-Dreams.mp3',
+  primavera: '/assets/sons/Samba-Atomica.mp3'
 }
 
 function getContexto() {
