@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-contexto="default">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RioDoro</title>
+    <link rel="stylesheet" href="style2.css">
+    <link rel="icon" href="assets/favicon.png" type="image/x-icon">
+    <Script src="script2.js" defer ></Script>
+
+</head>
+<body>
+    <header></header>
+    <main>
+        <div class="controles">
+            <ul>
+                <li><button data-contexto="verao" class="controles-botao botao_verao" >Verão</button></li>
+                <li><button data-contexto="inverno" class="controles-botao botao_inverno" >Inverno</button></li>
+                <li><button data-contexto="primavera" class="controles-botao botao_primavera" >Primavera</button></li>
+                <li class="botao_default_li" ><button data-contexto="default" class="botao_default"><img src="assets/retorna.png" alt=""></button></li>
+            </ul>
+        </div>
+        <div class="informacoes">
+            <div>
+                <h1 class="info_title">Chose your theme!</h1>
+                <p class="info_text">...</p>
+            </div>
+            <!-- <label class="switch">
+                <input type="checkbox" id="info-button">
+                <span class="slider"></span>
+            </label> -->
+        </div>
+        <div class="efeitos">
+            <div class="efeito-musica">
+                <span><img class="efeito-logo" src="assets/reprodutor-de-musica.png" alt=""></span>
+                <label class="switch">
+                    <input type="checkbox" id="info-button">
+                    <span class="slider"></span>
+                </label>
+                <input id="music-volume" type="range" min="0" max="1" step="0.01" value="0.5" />
+            </div>
+            <div class="efeitos-chuva">
+                <span><img class="efeito-logo-chuva" src="assets/chuva.png" alt=""></span>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-rain">
+                    <span class="slider"></span>
+                </label>
+                <input id="intensidade" type="range" min="50" max="1200" value="400" />
+            </div>
+        </div>
+    </main>
+    <footer>Todos os direitos reservados</footer>
+</body>
+</html>
