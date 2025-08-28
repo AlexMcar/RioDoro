@@ -13,23 +13,35 @@
     <header></header>
     <main>
         <div class="controles">
+            <button id="pomodoro_button"
+                    class="toggle_pomodoro"
+                    aria-expanded="false"
+                    aria-controls="painel">
+            <img class="tomate" src="assets/tomate.png" alt=""></button>
             <ul>
                 <li><button data-contexto="verao" class="controles-botao botao_verao" >Verão</button></li>
                 <li><button data-contexto="inverno" class="controles-botao botao_inverno" >Inverno</button></li>
                 <li><button data-contexto="primavera" class="controles-botao botao_primavera" >Primavera</button></li>
-                <li class="botao_default_li" ><button data-contexto="default" class="botao_default"><img src="assets/retorna.png" alt=""></button></li>
             </ul>
+            <button data-contexto="default" class="botao_default">
+                <img src="assets/retorna.png" alt="">
+            </button>
+        </div>
+        <div class="temporizador" hidden>
+            <div class="cronometro">
+            </div>
+            <button id="pomodoroStart">Começar</button>
         </div>
         <div class="informacoes">
-            <div>
+            <div class="info_main" >
                 <h1 class="info_title">Chose your theme!</h1>
                 <p class="info_text">...</p>
             </div>
-            <!-- <label class="switch">
-                <input type="checkbox" id="info-button">
-                <span class="slider"></span>
-            </label> -->
+            <div class="info_pomodoro" >
+
+            </div>
         </div>
+
         <div class="efeitos">
             <div class="efeito-musica">
                 <span><img class="efeito-logo" src="assets/reprodutor-de-musica.png" alt=""></span>
@@ -49,6 +61,6 @@
             </div>
         </div>
     </main>
-    <footer>Todos os direitos reservados</footer>
+    <footer>Todos os direitos reservados a DucksDesign</footer>
 </body>
 </html>

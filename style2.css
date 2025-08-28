@@ -63,6 +63,7 @@ body{
     background-color: var(--bg);
 }
 main{
+    height: 50%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -71,7 +72,7 @@ main{
     gap: 1rem;
 }
 
-.controles,.informacoes, .efeitos{
+.controles,.informacoes, .efeitos, .temporizador{
     /* background-color: rgb(255, 255, 255); */
     background: linear-gradient(135deg,
             rgba(255, 255, 255, 0.89) 0%,
@@ -86,21 +87,12 @@ main{
 
 .controles{
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
 
 }
 .controles ul{
-    display: flex;
     width: 100%;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
 }.controles li{all: unset;}
-.controles ul > li.botao_default_li {
-  margin-left: auto;
-}
 .controles-botao{
     all: unset;
     border: solid 1px #64646483;
@@ -134,10 +126,8 @@ main{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    text-align: left;
-    height: 200px;
+    height: 100%;
     gap: 1rem;
-    /* background-color: rgb(255, 255, 255); */
 }
 
 .info_title{
@@ -243,3 +233,35 @@ footer{
     margin-bottom: 2%;
     opacity: 70%;
 }
+
+.temporizador{
+    align-items: center;
+    gap: 3rem;
+}
+.cronometro input{
+    all: unset;
+    margin-bottom: 1rem;
+    font-size: 80px;
+}
+#pomodoroStart{
+    all: unset;
+    cursor: pointer;
+    background: #6b6b6b;
+    width: 100px;
+    height: 35px;
+    border-radius: 25px;
+    color: rgb(211, 211, 211);
+}#pomodoroStart:hover{
+    background: #464646;
+}
+.tomate, .salada{
+    width: 25px;
+}.toggle_pomodoro{
+    all: unset;
+    cursor: pointer;
+}
+footer{
+    padding: 1rem;
+    opacity: 50%;
+}
+

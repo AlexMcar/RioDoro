@@ -6,15 +6,49 @@ const botao_default = document.querySelector('.botao_default');
 const botao_verao = document.querySelector('.botao_verao');
 const botao_inverno = document.querySelector('.botao_inverno');
 const botao_primavera = document.querySelector('.botao_primavera');
+const abreFechaPomodoro = document.querySelector('#pomodoro_button');
+const temporizador = document.querySelector('.temporizador');
+const botaoComeçarPausar = document.querySelector('#pomodoroStart');
+
+const cronometro = document.querySelector('.cronometro');
+const inputTempo = document.createElement('input');
+const displayTempo = document.createElement('span');
+
+const soundsAlert ={
+  soundTomatoBtn: "assets/sons/tomato-squishwet.mp3",
+  soundTimeOff: "assets/sons/timer-terminer.mp3"
+}
 
 const botoes = document.querySelectorAll('.controles-botao');
+// controle de volume da música de contexto
+const volumeSlider = document.getElementById("music-volume");
 
 const toggle = document.getElementById("info-button");
 const musica = new Audio()
 musica.loop = true;
 
-// controle de volume da música de contexto
-const volumeSlider = document.getElementById("music-volume");
+const sons = {
+  default:   'assets/sons/default.mp3',
+  verao: 'assets/sons/Brazilian-Sunset.mp3',
+  inverno:   'assets/sons/Copacabana-Beach-Dreams.mp3',
+  primavera: 'assets/sons/Samba-Atomica.mp3',
+}
+
+
+let minutos = 25;
+let tempoDecorridoEmSegundos = minutos * 60;
+let intervaloId = null
+
+inputTempo.type = 'text';                 // vamos sempre exibir MM:SS
+inputTempo.className = 'cronometro-input';
+inputTempo.value = '';                    // valor virá do setViewMode()
+
+displayTempo.className = 'cronometro-display';
+
+// coloca os dois dentro da .cronometro
+cronometro.appendChild(inputTempo);
+cronometro.appendChild(displayTempo);
+
 
 if (volumeSlider) {
   musica.volume = volumeSlider.value; // inicia com valor do slider
@@ -24,12 +58,6 @@ if (volumeSlider) {
 }
 
 
-const sons = {
-  default:   'assets/sons/default.mp3',
-  verao: 'assets/sons/Brazilian-Sunset.mp3',
-  inverno:   'assets/sons/Copacabana-Beach-Dreams.mp3',
-  primavera: 'assets/sons/Samba-Atomica.mp3'
-}
 
 function getContexto() {
   return html.getAttribute("data-contexto") || "verao";
@@ -91,9 +119,11 @@ toggle.addEventListener("change", () => {
   }
 });
 
-
-
-// chuva
+// efeito CHUVA 🌧️🌧️🌧️🌧️
+//       '   '
+//      '   '
+//       '    '
+//     '  '  '
 
 (function(){
   let canvas, ctx, drops = [], animId = null;
@@ -241,5 +271,155 @@ toggle.addEventListener("change", () => {
     setVolumeByIntensity: (i)=> rainAudio.volume = volumeFromIntensity(i)
   };
 })();
+//
 
 
+const contagemRegressiva = () =>{
+   if(tempoDecorridoEmSegundos <=0 ){
+    timeOff()
+    return
+   }
+  tempoDecorridoEmSegundos -= 1
+  valorCronometro()
+}
+
+abreFechaPomodoro.addEventListener('click', ()=>{
+  const aberto = abreFechaPomodoro.getAttribute('aria-expanded') === 'true';
+  abreFechaPomodoro.setAttribute('aria-expanded', String(!aberto));
+  temporizador.hidden = aberto;
+
+  
+
+  const audio = new Audio(soundsAlert.soundTomatoBtn);
+  audio.currentTime = 0;
+  audio.play();
+  abreFechaPomodoro.innerHTML = aberto
+    ? '<img src="assets/tomate.png" alt="tomate" width="24">'
+    : '<img src="assets/tomate (1).png" alt="salada" width="24">';
+
+});
+
+function iniciarouPausar(){
+  if (intervaloId) {
+    // PAUSAR
+    zerar();
+    botaoComeçarPausar.textContent = 'Começar';
+    setViewMode();     // mostra MM:SS atual
+    return;
+  }
+  // COMEÇAR
+  if (editing) exitEdit(true); // aplica o que estiver digitado
+  setRunMode();
+  valorCronometro();
+  intervaloId = setInterval(contagemRegressiva, 1000);
+  botaoComeçarPausar.textContent = 'Pausar';
+}
+
+
+
+
+function zerar(){
+  clearInterval(intervaloId)
+  intervaloId=null
+}
+function timeOff(){
+  const audio = new Audio(soundsAlert.soundTimeOff);
+  audio.currentTime = 0;
+  audio.play();
+  zerar();
+  setViewMode(); // continua mostrando 00:00
+  setTimeout(() => alert('time off!'), 150);
+}
+
+
+botaoComeçarPausar.addEventListener('click',()=>{
+  iniciarouPausar()
+});
+
+function formatMMSS(seg) {
+  const m = Math.floor(seg / 60).toString().padStart(2, '0');
+  const s = (seg % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+// aceita "mm", "mm:ss"
+function parseMMSS(str) {
+  const t = (str || '').trim();
+  if (t.includes(':')) {
+    let [m, s = '0'] = t.split(':');
+    const min = Math.max(0, parseInt(m, 10) || 0);
+    let sec  = Math.max(0, parseInt(s, 10) || 0);
+    if (sec > 59) sec = 59;           // trava 0–59
+    return min * 60 + sec;
+  }
+  const min = Math.max(0, parseInt(t, 10) || 0);
+  return min * 60;
+}
+
+let editing = false; // se está editando minutos
+
+function setViewMode() {
+  inputTempo.disabled = false;
+  inputTempo.type = 'text';
+  inputTempo.value = formatMMSS(tempoDecorridoEmSegundos);
+}
+
+// rodando: mostra MM:SS e trava
+function setRunMode() {
+  inputTempo.disabled = true;
+  inputTempo.type = 'text';
+  inputTempo.value = formatMMSS(tempoDecorridoEmSegundos);
+}
+
+// entra em edição (parado)
+function enterEdit() {
+  editing = true;
+  inputTempo.disabled = false;
+  inputTempo.type = 'text';
+  inputTempo.value = formatMMSS(tempoDecorridoEmSegundos);
+  // seleciona tudo p/ facilitar
+  requestAnimationFrame(() => inputTempo.select());
+}
+
+// sai da edição (commit true = aplica)
+function exitEdit(commit = true) {
+  if (commit) {
+    const secs = Math.max(1, parseMMSS(inputTempo.value)); // pelo menos 1s
+    tempoDecorridoEmSegundos = secs;
+  }
+  editing = false;
+  setViewMode();
+}
+
+// usado pelo tick
+function valorCronometro() {
+  inputTempo.value = formatMMSS(tempoDecorridoEmSegundos);
+}
+
+
+// ===== listeners do input =====
+inputTempo.addEventListener('focus', () => {
+  if (!intervaloId && !editing) enterEdit();
+});
+
+inputTempo.addEventListener('blur', () => {
+  if (!intervaloId && editing) exitEdit(true);
+});
+
+inputTempo.addEventListener('keydown', (e) => {
+  if (!intervaloId && editing) {
+    if (e.key === 'Enter') exitEdit(true);   // confirma
+    if (e.key === 'Escape') exitEdit(false); // cancela
+  }
+});
+
+// (opcional) enquanto digita já atualiza a variável, sem reformatar
+inputTempo.addEventListener('input', () => {
+  if (editing) {
+    const secs = parseMMSS(inputTempo.value);
+    if (!Number.isNaN(secs)) tempoDecorridoEmSegundos = Math.max(0, secs);
+  }
+});
+
+setViewMode();        // >>> vai exibir 25:00
+valorCronometro();
